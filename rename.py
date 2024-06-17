@@ -11,12 +11,12 @@ fileList = os.listdir(dir)
 fileList.sort()
 
 
-
+# case: m
 for filename in fileList:
     f = os.path.join(dir, filename)
     ind = filename.find('_m')
     if  ind != -1 : #filter for make-up, only one at a time (m#)
-        # print('filename:', filename)
+        print('filename:', filename)
         makeup = filename[ind + 2]
         sampleInd = filename.find('_s') 
         # print(type(makeup))
@@ -24,19 +24,22 @@ for filename in fileList:
         
         base = filename[:ind]
         
-        if sampleInd != -1:
-            if makeup == filename[sampleInd+2]:
-                # print(filename)
-                newname = filename[:sampleInd + 1] + filename[sampleInd + 3:]
-                # print(newname)
-                print('renaming', filename, 'to', newname)
-                os.rename(os.path.join(dir, filename),os.path.join(dir, newname))
-            else: # remove extras where mn != sn
+        if sampleInd != -1:  #case: contains s#
+            if makeup != filename[sampleInd+2]:
                 print('deleting', os.path.join(dir, filename))
                 os.remove(os.path.join(dir, filename))
+        else: # case: doesnt have s#: add it in
+            newname = filename[:ind + 3] + '_s' + makeup + filename[-6:]
+            # print(newname)
+            print('renaming', filename, 'to', newname)
+            os.rename(os.path.join(dir, filename),os.path.join(dir, newname))
+            filename = newname
         
 
-        c = filename[ind + 5]
+        c = filename[-5]
+        # print('c', c)
+        fileList = os.listdir(dir) #update list
+        fileList.sort()
         for file in reversed(fileList):
             if file.find(base) != -1 and file.find('m') == -1 and file[-5] == c:
                 sInd = file.find('_s')+2
@@ -45,7 +48,7 @@ for filename in fileList:
                     print('renaming', file, 'to', newname)
                     os.rename(os.path.join(dir, file),os.path.join(dir, newname))
 
-        newname = base + '_s' + makeup + 's' + c +'.jpg' #+ filename[ind + 3:]
+        newname = base + '_s' + makeup + 'c' + c +'.jpg'
         print('renaming', filename, 'to', newname)
         os.rename(os.path.join(dir, filename),os.path.join(dir, newname))
 
@@ -53,14 +56,12 @@ for filename in fileList:
         # print(makeup)
         # print(base)
         # case: multiple samples
+    
+    
+# case: r
+# for filename in fileList:
+#     f = os.path.join(dir, filename)
+#     ind = filename.find('_r')
+#     if  ind != -1:
         
-
-
-
-
-# search for m r
-
-# case m
-#   case: multiple samples
-#   case: one samples
-# case r
+#         print(filename)
