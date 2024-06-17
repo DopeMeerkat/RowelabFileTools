@@ -1,6 +1,5 @@
 import os
 import shutil
-import re
 
 cwd = os.getcwd()
 sourceDir = 'test1'
@@ -13,14 +12,11 @@ fileList.sort()
 
 # case: m
 for filename in fileList:
-    f = os.path.join(dir, filename)
     ind = filename.find('_m')
     if  ind != -1 : #filter for make-up, only one at a time (m#)
-        print('filename:', filename)
+        # print('filename:', filename)
         makeup = filename[ind + 2]
         sampleInd = filename.find('_s') 
-        # print(type(makeup))
-        # print(type(filename[sampleInd+2]))
         
         base = filename[:ind]
         
@@ -52,16 +48,19 @@ for filename in fileList:
         print('renaming', filename, 'to', newname)
         os.rename(os.path.join(dir, filename),os.path.join(dir, newname))
 
-
-        # print(makeup)
-        # print(base)
-        # case: multiple samples
-    
     
 # case: r
-# for filename in fileList:
-#     f = os.path.join(dir, filename)
-#     ind = filename.find('_r')
-#     if  ind != -1:
+for filename in fileList:
+    ind = filename.find('_r')
+    if  ind != -1:
+        # print('filename:', filename)
+        base = filename[:ind]
         
-#         print(filename)
+        if filename[ind:-9].find(filename[-7]):
+            # print(filename[ind])
+            basefile = base + filename[-9:]
+            print('replacing', basefile, 'with', filename)
+            os.replace(os.path.join(dir, filename),os.path.join(dir, basefile))
+            
+        # while True:
+        #     # shutil.move(os.path.join(dir, filename), os.path.join(os.path.join(cwd, '01_Submitted/Layers/Threshold'), newname))
