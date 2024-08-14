@@ -1,2 +1,3 @@
-img/
-test1/
+test
+__pycache__
+.DS_Store
